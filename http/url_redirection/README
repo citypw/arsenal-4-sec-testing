@@ -1,0 +1,22 @@
+Shawn the R0ck, Oct 1st 2012
+
+What makes motivation ticks?
+
+One friend asked me once, what are these attacker will do if they
+already wired in some networking gateway device? This program is
+trying to answer his/her question at some aspect. Here's my
+assumptions:
+
+1, A networking gateway device was running with GNU/Linux.
+=> So, we can use netfilter features
+
+2, We've already hacked( hack is a postive/divine word) into this
+device.
+
+3, Attacker want to redirect some url to a phishing site.
+
+I tried to write a netfilter-based url redirection stuff. I spent 2
+days to write the POC code. It still didn't work yet. It might has
+some checksum issue there. It'd be ok. I will levea the issue to the
+future when I have enough knowledge about TCP/IP network. It'd be
+welcomed to those who are willing to improve this unfinished artifact.
