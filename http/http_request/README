@@ -4,7 +4,7 @@ This is a very simple tool. You can use it to send some http
 request. I'm a newbie on http field. Thanks to Thomas and Yifan, for
 helping me figure out HTTP stuff and write this program.
 
-shawn@bt:/arsenal-4-sec-testing/http$ ./http_request.py www.heise.de "OPTIONS * HTTP/1.1\r\nHost: www.heise.de\r\nAccept: *\r\n\r\n"
+shawn@bt:/arsenal-4-sec-testing/http$ ./http_request.py www.heise.de 80 "OPTIONS * HTTP/1.1\r\nHost: www.heise.de\r\nAccept: *\r\n\r\n"
 send:
 OPTIONS * HTTP/1.1
 Host: www.heise.de
