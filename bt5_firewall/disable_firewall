@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "Disable BT5 firewall"
+iptables -F
+
+sleep 1
+iptables -X forward_ext
+iptables -X input_ext 
+iptables -X reject_func
+sleep 1
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+

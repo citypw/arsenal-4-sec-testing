@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Enable BT5 Firewall( it's based on SuSEfirewall..."
+iptables-restore -v susefirewall.log
