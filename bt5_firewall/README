@@ -1,0 +1,22 @@
+Oct 18 2012
+
+What is BT5-firewall?
+
+It's a bunch of iptables polices which copy from SuSEfirewall.
+
+Motivations?
+
+BackTrack is a great GNU/Linux distro for pentesting. How can a
+pentesting distro doesn't have any networking filters? It will be
+ironic story if a pentester being cracked by some script kids-_-
+
+How to use?
+
+├── disable_firewall
+├── enable_firewall
+├── README
+└── susefirewall.log /* You need to modify the network interfaces for ur own */
+
+It's pretty easy to use it on your own GNU/Linux. Make sure your
+GNU/Linux already has netfilter/iptables. Then "enable_firewall" and
+"disable_firewall" will be your friendly arsenal.
