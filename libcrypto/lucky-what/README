@@ -1,0 +1,63 @@
+Shawn the R0ck - Apr 26 2013
+
+I'm a newbie on crypto field. Unfortunately, I need to deal with some
+open source security stuff( openssl and gnutls) in my day job. Yes,
+don't be so sad for me;-) I can handle it so far. I need to know more
+knowledge about crypto. The best way to do it is writing xxx-attack
+PoC. Then I've heard of Lucky-13 is something. Backport these patches
+from upstream drives me crazy. Dude, you known~ 13 openssl upstream
+commits( more than 1,700 loc modifiy) were only for fix a security
+issue what called Lucky-13 Thirteen which was disclosured in 2013. It
+was my honor to do this shitload work with very very lower salary;-)
+After I finished it, a very serious question came out of my mind: What
+if another tens of shitload work pop up in the future but with no help
+from the upstream community? Well...I have to eat the rocket by my own
+hands. F0r preparing to handle such situation, I need to know the
+detail of the attack. That's why I wrote the padding oracle attack
+PoC.
+
+I googled "padding oracle attack". I found 3 guys wrote their own
+padding oracle attack PoC/tools in 3 differnt languages: perl, ruby
+and python. I looked their code and articles. They guys are awesome!
+
+Brian Holyfield( Perl guy) wrote this very good article and more
+importantly it's easy to understand:
+ 
+http://blog.gdssecurity.com/labs/2010/9/14/automated-padding-oracle-attacks-with-padbuster.html
+
+Daoge( python one) is a CHiense hacker who are good at web
+security:
+http://hi.baidu.com/aullik5/item/49ab45de982a67db251f40f6
+
+Ron Bowes( Ruby guy) gave us a great presentation at Shmoocon 2013. I
+really thank his practical advice. He wrote two articles about padding
+oracle attack. The 1st one introduce the principle and the 2nd is
+giving an great example.
+
+http://www.skullsecurity.org/blog/2013/padding-oracle-attacks-in-depth
+
+http://www.skullsecurity.org/blog/2013/a-padding-oracle-example
+
+
+Well, I'm a kind of old school guy. I decided write it in
+C( not old enough as asm). This example is simple:
+
+shawn@shawn-fortress /arsenal-4-sec-testing/libcrypto/lucky-what $ make
+gcc -g -o padding_oracle_attack_poc padding_oracle_attack_poc.c -lcrypto
+done
+shawn@shawn-fortress /arsenal-4-sec-testing/libcrypto/lucky-what $ ./padding_oracle_attack_poc 
+Ciphertext is 16 bytes: 83e10d51e6d122ca3faf089c7a924a7b
+Decrypting now
+205 is done: 00000000000000ce3faf089c7a924a7b
+36 is done: 00000000000025cd3faf089c7a924a7b
+214 is done: 0000000000d724cc3faf089c7a924a7b
+230 is done: 00000000e7d023cb3faf089c7a924a7b
+80 is done: 00000051e6d122ca3faf089c7a924a7b
+110 is done: 00006f52e5d221c93faf089c7a924a7b
+137 is done: 008a6e53e4d320c83faf089c7a924a7b
+248 is done: f985615cebdc2fc73faf089c7a924a7b
+The original plaintext is: "Hello World"
+The one last block of plaintext: 726c6405050505050000000000000000
+----> rld
+
+
