@@ -1,0 +1,20 @@
+# IPv4 filtering
+table filter {
+        chain input {
+                 type filter hook input priority 0;
+                 ct state established accept
+                 ct state related accept
+                 meta iif lo accept
+                 tcp dport ssh counter packets 0 bytes 0 accept
+		 icmp type echo-request accept
+                 counter packets 5 bytes 5 log drop
+        }
+
+        chain output {
+                 type filter hook output priority 0;
+                 ct state established accept
+                 ct state related accept
+                 meta oif lo accept
+                 ct state new counter packets 0 bytes 0 accept
+        }
+}
