@@ -19,7 +19,7 @@ COMMIT
 -A INPUT -p icmp -m state --state RELATED -j ACCEPT 
 -A INPUT -i eth0 -j input_ext 
 #-A INPUT -i pan0 -j input_ext 
--A INPUT -i wlan0 -j input_ext 
+#-A INPUT -i wlan0 -j input_ext 
 -A INPUT -j input_ext 
 -A INPUT -m limit --limit 3/min -j LOG --log-prefix "SFW2-IN-ILL-TARGET " --log-tcp-options --log-ip-options 
 -A INPUT -j DROP 
@@ -35,6 +35,18 @@ COMMIT
 -A input_ext -p tcp -m limit --limit 3/min -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j LOG --log-prefix "SFW2-INext-DROP-DEFLT " --log-tcp-options --log-ip-options 
 -A input_ext -p icmp -m limit --limit 3/min -j LOG --log-prefix "SFW2-INext-DROP-DEFLT " --log-tcp-options --log-ip-options 
 -A input_ext -p udp -m limit --limit 3/min -m state --state NEW -j LOG --log-prefix "SFW2-INext-DROP-DEFLT " --log-tcp-options --log-ip-options 
+
+#open http and ssh ports
+-A input_ext -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+-A input_ext -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+
+# prevent ssh brute force attack
+-N LOGDROP
+-A LOGDROP -j LOG
+-A LOGDROP -j DROP
+-I input_ext -p tcp --dport 22 -i eth0 -m state --state NEW -m recent --set
+-I input_ext -p tcp --dport 22 -i eth0 -m state --state NEW -m recent  --update --seconds 60 --hitcount 4 -j LOGDROP
+
 -A input_ext -j DROP 
 -A reject_func -p tcp -j REJECT --reject-with tcp-reset 
 -A reject_func -p udp -j REJECT --reject-with icmp-port-unreachable 

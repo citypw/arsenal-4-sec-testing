@@ -7,7 +7,7 @@ sleep 1
 iptables -X forward_ext
 iptables -X input_ext 
 iptables -X reject_func
+iptables -X LOGDROP
 sleep 1
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
-
