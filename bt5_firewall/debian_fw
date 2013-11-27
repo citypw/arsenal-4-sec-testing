@@ -16,11 +16,8 @@ PUB_IF="eth0"
 #unlimited 
 $IPT -A INPUT -i lo -j ACCEPT
 $IPT -A OUTPUT -o lo -j ACCEPT
- 
 # DROP all incomming traffic
 $IPT -P INPUT DROP
-$IPT -P OUTPUT ACCEPT
-$IPT -P FORWARD DROP
  
 # block all bad ips
 for ip in $BADIPS
@@ -28,6 +25,21 @@ do
     $IPT -A INPUT -s $ip -j DROP
     $IPT -A OUTPUT -d $ip -j DROP
 done
+
+$IPT -A INPUT -m state --state ESTABLISHED -j ACCEPT
+$IPT -A INPUT -p icmp -m state --state RELATED -j ACCEPT
+
+$IPT -A INPUT -m limit --limit 3/min -j LOG --log-prefix "SFW2-IN-ILL-TARGET " --log-tcp-options --log-ip-options
+$IPT -A FORWARD -m physdev --physdev-is-bridged -j ACCEPT
+$IPT -A FORWARD -m limit --limit 3/min -j LOG --log-prefix "SFW2-FWD-ILL-ROUTING " --log-tcp-options --log-ip-options
+
+#$IPT -A input_ext -m pkttype --pkt-type broadcast -j DROP
+#$IPT -A input_ext -m limit --limit 3/min -m pkttype --pkt-type multicast -j LOG --log-prefix "SFW2-INext-DROP-DEFLT " --log-tcp-options --log-ip-options
+#$IPT -A input_ext -m pkttype --pkt-type multicast -j DROP
+#$IPT -A input_ext -m pkttype --pkt-type broadcast -j DROP
+#$IPT -A input_ext -p tcp -m limit --limit 3/min -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j LOG --log-prefix "SFW2-INext-DROP-DEFLT " --log-tcp-options --log-ip-options
+#$IPT -A input_ext -p icmp -m limit --limit 3/min -j LOG --log-prefix "SFW2-INext-DROP-DEFLT " --log-tcp-options --log-ip-options
+#$IPT -A input_ext -p udp -m limit --limit 3/min -m state --state NEW -j LOG --log-prefix "SFW2-INext-DROP-DEFLT " --log-tcp-options --log-ip-options
  
 # sync
 $IPT -A INPUT -i ${PUB_IF} -p tcp ! --syn -m state --state NEW  -m limit --limit 5/m --limit-burst 7 -j LOG --log-level 4 --log-prefix "Drop Syn"
@@ -59,12 +71,13 @@ $IPT  -A INPUT -i ${PUB_IF} -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
  
  
 # Allow full outgoing connection but no incomming stuff
-$IPT -A INPUT -i ${PUB_IF} -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPT -A OUTPUT -o ${PUB_IF} -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
- 
+$IPT -A INPUT -p icmp -m icmp --icmp-type 4 -j ACCEPT
+$IPT -A OUTPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+
 # allow ssh/http only
-$IPT -A INPUT -p tcp --destination-port 22 -j ACCEPT
+$IPT -A INPUT -p tcp --dport 22 -j ACCEPT
 $IPT -A INPUT -p tcp --dport 80 -j ACCEPT
+$IPT -A INPUT -p tcp --dport 443 -j ACCEPT
  
 # allow incoming ICMP ping pong stuff
 $IPT -A INPUT -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
