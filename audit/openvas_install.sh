@@ -1,5 +1,14 @@
 #!/bin/sh
 
+echo "====================[ Auto-Installation for GNU/Linux ]===================="
+echo "###########################################################################"
+
+echo " This is free software, and you are welcome to redistribute it
+ under the terms of the GNU General Public License.  See LICENSE file
+  for details about using this software."  
+	  echo "\nSee the detail: http://hackertarget.com/install-openvas-7-ubuntu/."
+	  echo "###########################################################################"
+
 OPENVAS_DIR=/tmp/openvas
 
 
