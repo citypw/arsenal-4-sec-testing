@@ -11,25 +11,30 @@ echo " This is free software, and you are welcome to redistribute it
 
 OPENVAS_DIR=/tmp/openvas
 
+LIB_VERSION=7.0.6
+SCANNER_VERSION=4.0.5
+MANAGER_VERSION=5.0.7
+GSA_VERSION=5.0.4
+CLI_VERSION=1.3.1
 
 openvas_prework(){
-	sudo apt-get install libglib3.0-cil-dev libpcap-dev libgnutls-dev build-essential bison flex cmake pkg-config libgpgme11 libgpgme11-dev doxygen libuuid1 uuid-dev libsql-translator-perl xmltoman sqlite3 libxml2-dev libxslt1.1 libxslt1-dev xsltproc libmicrohttpd-dev
+	sudo apt-get install libglib3.0-cil-dev libpcap-dev libgnutls-dev build-essential bison flex cmake pkg-config libgpgme11 libgpgme11-dev doxygen libuuid1 uuid-dev libsql-translator-perl xmltoman sqlite3 libsqlite3-dev libxml2-dev libxslt1.1 libxslt1-dev xsltproc libmicrohttpd-dev
 
 	cd $OPENVAS_DIR
 
-	wget http://wald.intevation.org/frs/download.php/1638/openvas-libraries-7.0.1.tar.gz
-	wget http://wald.intevation.org/frs/download.php/1640/openvas-scanner-4.0.1.tar.gz
-	wget http://wald.intevation.org/frs/download.php/1637/openvas-manager-5.0.0.tar.gz
-	wget http://wald.intevation.org/frs/download.php/1639/greenbone-security-assistant-5.0.0.tar.gz
-	wget http://wald.intevation.org/frs/download.php/1633/openvas-cli-1.3.0.tar.gz
+	wget http://wald.intevation.org/frs/download.php/1833/openvas-libraries-$LIB_VERSION.tar.gz
+	wget http://wald.intevation.org/frs/download.php/1844/openvas-scanner-$SCANNER_VERSION.tar.gz
+	wget http://wald.intevation.org/frs/download.php/1849/openvas-manager-$MANAGER_VERSION.tar.gz
+	wget http://wald.intevation.org/frs/download.php/1799/greenbone-security-assistant-$GSA_VERSION.tar.gz	
+	wget http://wald.intevation.org/frs/download.php/1803/openvas-cli-$CLI_VERSION.tar.gz	
 	
 	mkdir src
 	cd src
-	tar xf ../greenbone-security-assistant-5.0.0.tar.gz
-	tar xf ../openvas-libraries-7.0.1.tar.gz 
-	tar xf ../openvas-scanner-4.0.1.tar.gz 
-	tar xf ../openvas-cli-1.3.0.tar.gz 
-	tar xf ../openvas-manager-5.0.0.tar.gz
+	tar xf ../greenbone-security-assistant-$GSA_VERSION.tar.gz
+	tar xf ../openvas-libraries-$LIB_VERSION.tar.gz 
+	tar xf ../openvas-scanner-$SCANNER_VERSION.tar.gz 
+	tar xf ../openvas-cli-$CLI_VERSION.tar.gz 
+	tar xf ../openvas-manager-$MANAGER_VERSION.tar.gz
 }
 
 openvas_build() {
@@ -42,12 +47,13 @@ openvas_build() {
 }
 
 openvas_compile() {
-	cd openvas-libraries-7.0.1
+	cd openvas-libraries-$LIB_VERSION
 	openvas_build
+	cd ..
 
 	for i in $DIR
 	do
-		if [ $i != "openvas-libraries-7.0.1" ]; then
+		if [ $i != "openvas-libraries-$LIB_VERSION" ]; then
 			cd $i
 			openvas_build
 			cd ..
