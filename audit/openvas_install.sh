@@ -6,7 +6,8 @@ echo "##########################################################################
 echo " This is free software, and you are welcome to redistribute it
  under the terms of the GNU General Public License.  See LICENSE file
   for details about using this software."  
-	  echo "\nSee the detail: http://hackertarget.com/install-openvas-7-ubuntu/."
+	  echo "\nSee the detail: http://hackertarget.com/install-openvas-7-ubuntu/"
+	  echo "\nSee the detail: http://www.mockel.se/index.php/2014/06/openvas-7-on-ubuntu-server-14-04/"
 	  echo "###########################################################################"
 
 OPENVAS_DIR=/tmp/openvas
